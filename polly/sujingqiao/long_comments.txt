@@ -1,1 +1,2753 @@
+=== 长注释提取报告 ===
+根目录: /Users/sujingqiao/Documents/homepage/ENV/myenv/source/polly
+最小行数: 4
+包含头文件: 否
+提取时间: 1756166183.01
+找到的长注释块数量: 177
+
+================================================================================
+
+[1] 文件: Exchange/JSONExporter.cpp : 第 95 行
+------------------------------------------------------------
+Export all arrays from the Scop.
+
+@param S The Scop containing the arrays.
+
+@returns Json::Value containing the arrays.
+
+================================================================================
+
+[2] 文件: Exchange/JSONExporter.cpp : 第 206 行
+------------------------------------------------------------
+Import a new context from JScop.
+
+@param S The scop to update.
+@param JScop The JScop file describing the new schedule.
+
+@returns True if the import succeeded, otherwise False.
+
+================================================================================
+
+[3] 文件: Exchange/JSONExporter.cpp : 第 256 行
+------------------------------------------------------------
+Import a new schedule from JScop.
+
+... and verify that the new schedule does preserve existing data
+dependences.
+
+@param S The scop to update.
+@param JScop The JScop file describing the new schedule.
+@param D The data dependences of the @p S.
+
+@returns True if the import succeeded, otherwise False.
+
+================================================================================
+
+[4] 文件: Exchange/JSONExporter.cpp : 第 340 行
+------------------------------------------------------------
+Import new memory accesses from JScop.
+
+@param S The scop to update.
+@param JScop The JScop file describing the new schedule.
+@param DL The data layout to assume.
+@param NewAccessStrings optionally record the imported access strings
+
+@returns True if the import succeeded, otherwise False.
+
+================================================================================
+
+[5] 文件: Exchange/JSONExporter.cpp : 第 593 行
+------------------------------------------------------------
+Get the accepted primitive type from its textual representation
+       @p TypeTextRepresentation.
+
+@param TypeTextRepresentation The textual representation of the type.
+@return The pointer to the primitive type, if this type is accepted
+        or nullptr otherwise.
+
+================================================================================
+
+[6] 文件: Exchange/JSONExporter.cpp : 第 625 行
+------------------------------------------------------------
+Import new arrays from JScop.
+
+@param S The scop to update.
+@param JScop The JScop file describing new arrays.
+
+@returns True if the import succeeded, otherwise False.
+
+================================================================================
+
+[7] 文件: Exchange/JSONExporter.cpp : 第 687 行
+------------------------------------------------------------
+Import a Scop from a JSCOP file
+@param S The scop to be modified
+@param D Dependence Info
+@param DL The DataLayout of the function
+@param NewAccessStrings Optionally record the imported access strings
+
+@returns true on success, false otherwise. Beware that if this returns
+false, the Scop may still have been modified. In this case the Scop contains
+invalid information.
+
+================================================================================
+
+[8] 文件: CodeGen/IRBuilder.cpp : 第 25 行
+------------------------------------------------------------
+Get a self referencing id metadata node.
+
+The MDNode looks like this (if arg0/arg1 are not null):
+
+   '!n = distinct !{!n, arg0, arg1}'
+
+@return The self referencing id metadata node.
+
+================================================================================
+
+[9] 文件: CodeGen/IRBuilder.cpp : 第 185 行
+------------------------------------------------------------
+Get the pointer operand
+
+@param Inst The instruction to be analyzed.
+@return the pointer operand in case @p Inst is a memory access
+        instruction and nullptr otherwise.
+
+================================================================================
+
+[10] 文件: CodeGen/IRBuilder.cpp : 第 198 行
+------------------------------------------------------------
+Find the base pointer of an array access.
+
+This should be equivalent to ScalarEvolution::getPointerBase, which we
+cannot use here the IR is still under construction which ScalarEvolution
+assumes to not be modified.
+
+================================================================================
+
+[11] 文件: CodeGen/IslAst.cpp : 第 191 行
+------------------------------------------------------------
+Check if the current scheduling dimension is parallel.
+
+In case the dimension is parallel we also check if any reduction
+dependences is broken when we exploit this parallelism. If so,
+@p IsReductionParallel will be set to true. The reduction dependences we use
+to check are actually the union of the transitive closure of the initial
+reduction dependences together with their reversal. Even though these
+dependences connect all iterations with each other (thus they are cyclic)
+we can perform the parallelism check as we are only interested in a zero
+(or non-zero) dependence distance on the dimension in question.
+
+================================================================================
+
+[12] 文件: CodeGen/IslAst.cpp : 第 438 行
+------------------------------------------------------------
+Simple cost analysis for a given SCoP.
+
+TODO: Improve this analysis and extract it to make it usable in other
+      places too.
+      In order to improve the cost model we could either keep track of
+      performed optimizations (e.g., tiling) or compute properties on the
+      original as well as optimized SCoP (e.g., #stride-one-accesses).
+
+================================================================================
+
+[13] 文件: CodeGen/CodeGeneration.cpp : 第 75 行
+------------------------------------------------------------
+Mark a basic block unreachable.
+
+Marks the basic block @p Block unreachable by equipping it with an
+UnreachableInst.
+
+================================================================================
+
+[14] 文件: CodeGen/CodeGeneration.cpp : 第 117 行
+------------------------------------------------------------
+Remove all lifetime markers (llvm.lifetime.start, llvm.lifetime.end) from
+@R.
+
+CodeGeneration does not copy lifetime markers into the optimized SCoP,
+which would leave the them only in the original path. This can transform
+code such as
+
+    llvm.lifetime.start(%p)
+    llvm.lifetime.end(%p)
+
+into
+
+    if (RTC) {
+      // generated code
+    } else {
+      // original code
+      llvm.lifetime.start(%p)
+    }
+    llvm.lifetime.end(%p)
+
+The current StackColoring algorithm cannot handle if some, but not all,
+paths from the end marker to the entry block cross the start marker. Same
+for start markers that do not always cross the end markers. We avoid any
+issues by removing all lifetime markers, even from the original code.
+
+A better solution could be to hoist all llvm.lifetime.start to the split
+node and all llvm.lifetime.end to the merge node, which should be
+conservatively correct.
+
+================================================================================
+
+[15] 文件: CodeGen/IslNodeBuilder.cpp : 第 279 行
+------------------------------------------------------------
+Extract the out-of-scop values and SCEVs referenced from a set describing
+a ScopStmt.
+
+This includes the SCEVUnknowns referenced by the SCEVs used in the
+statement and the base pointers of the memory accesses. For scalar
+statements we force the generation of alloca memory locations and list
+these locations in the set of out-of-scop values as well.
+
+@param Set     A set which references the ScopStmt we are interested in.
+@param UserPtr A void pointer that can be casted to a SubtreeReferences
+               structure.
+
+================================================================================
+
+[16] 文件: CodeGen/IslNodeBuilder.cpp : 第 296 行
+------------------------------------------------------------
+Extract the out-of-scop values and SCEVs referenced from a union set
+referencing multiple ScopStmts.
+
+This includes the SCEVUnknowns referenced by the SCEVs used in the
+statement and the base pointers of the memory accesses. For scalar
+statements we force the generation of alloca memory locations and list
+these locations in the set of out-of-scop values as well.
+
+@param USet       A union set referencing the ScopStmts we are interested
+                  in.
+@param References The SubtreeReferences data structure through which
+                  results are returned and further information is
+                  provided.
+
+================================================================================
+
+[17] 文件: CodeGen/IslNodeBuilder.cpp : 第 344 行
+------------------------------------------------------------
+Note: Code generation of induction variables of loops outside Scops
+
+Remove loops that contain the scop or that are part of the scop, as they
+are considered local. This leaves only loops that are before the scop, but
+do not contain the scop itself.
+We ignore loops perfectly contained in the Scop because these are already
+generated at `IslNodeBuilder::addParameters`. These `Loops` are loops
+whose induction variables are referred to by the Scop, but the Scop is not
+fully contained in these Loops. Since there can be many of these,
+we choose to codegen these on-demand.
+@see IslNodeBuilder::materializeNonScopLoopInductionVariable.
+
+================================================================================
+
+[18] 文件: CodeGen/IslNodeBuilder.cpp : 第 415 行
+------------------------------------------------------------
+Restore the initial ordering of dimensions of the band node
+
+In case the band node represents all the dimensions of the iteration
+domain, recreate the band node to restore the initial ordering of the
+dimensions.
+
+@param Node The band node to be modified.
+@return The modified schedule node.
+
+================================================================================
+
+[19] 文件: CodeGen/IslNodeBuilder.cpp : 第 1391 行
+------------------------------------------------------------
+We pass the insert location of our Builder, as Polly ensures during IR
+generation that there is always a valid CFG into which instructions are
+inserted. As a result, the insertpoint is known to be always followed by a
+terminator instruction. This means the insert point may be specified by a
+terminator instruction, but it can never point to an ->end() iterator
+which does not have a corresponding instruction. Hence, dereferencing
+the insertpoint to obtain an instruction is known to be save.
+
+We also do not need to update the Builder here, as new instructions are
+always inserted _before_ the given InsertLocation. As a result, the
+insert location remains valid.
+
+================================================================================
+
+[20] 文件: CodeGen/IslNodeBuilder.cpp : 第 1412 行
+------------------------------------------------------------
+The AST expression we generate to perform the run-time check assumes
+computations on integer types of infinite size. As we only use 64-bit
+arithmetic we check for overflows, in case of which we set the result
+of this run-time check to false to be conservatively correct,
+
+================================================================================
+
+[21] 文件: lib/Analysis/ScopDetection.cpp : 第 830 行
+------------------------------------------------------------
+Remove smax of smax(0, size) expressions from a SCEV expression and
+register the '...' components.
+
+Array access expressions as they are generated by GFortran contain smax(0,
+size) expressions that confuse the 'normal' delinearization algorithm.
+However, if we extract such expressions before the normal delinearization
+takes place they can actually help to identify array size expressions in
+Fortran accesses. For the subsequently following delinearization the smax(0,
+size) component can be replaced by just 'size'. This is correct as we will
+always add and verify the assumption that for all subscript expressions
+'exp' the inequality 0 <= exp < size holds. Hence, we will also verify
+that 0 <= size, which means smax(0, size) == size.
+
+================================================================================
+
+[22] 文件: lib/Analysis/ScopDetection.cpp : 第 1266 行
+------------------------------------------------------------
+Check whether @p L has exiting blocks.
+
+@param L The loop of interest
+
+@return True if the loop has exiting blocks, false otherwise.
+
+================================================================================
+
+[23] 文件: lib/Analysis/ScopDetection.cpp : 第 1844 行
+------------------------------------------------------------
+Enum for coloring BBs in Region.
+
+WHITE - Unvisited BB in DFS walk.
+GREY - BBs which are currently on the DFS stack for processing.
+BLACK - Visited and completely processed BB.
+
+================================================================================
+
+[24] 文件: lib/Analysis/ScopBuilder.cpp : 第 191 行
+------------------------------------------------------------
+Create a map to map from a given iteration to a subsequent iteration.
+
+This map maps from SetSpace -> SetSpace where the dimensions @p Dim
+is incremented by one and all other dimensions are equal, e.g.,
+            [i0, i1, i2, i3] -> [i0, i1, i2 + 1, i3]
+
+if @p Dim is 2 and @p SetSpace has 4 dimensions.
+
+================================================================================
+
+[25] 文件: lib/Analysis/ScopBuilder.cpp : 第 223 行
+------------------------------------------------------------
+Compute the (un)bounded parts of @p S wrt. to dimension @p Dim.
+
+@returns A separation of @p S into first an unbounded then a bounded subset,
+         both with regards to the dimension @p Dim.
+
+================================================================================
+
+[26] 文件: lib/Analysis/ScopBuilder.cpp : 第 335 行
+------------------------------------------------------------
+Compute the isl representation for the SCEV @p E in this BB.
+
+@param BB               The BB for which isl representation is to be
+computed.
+@param InvalidDomainMap A map of BB to their invalid domains.
+@param E                The SCEV that should be translated.
+@param NonNegative      Flag to indicate the @p E has to be non-negative.
+
+Note that this function will also adjust the invalid context accordingly.
+
+================================================================================
+
+[27] 文件: lib/Analysis/ScopBuilder.cpp : 第 354 行
+------------------------------------------------------------
+Build condition sets for unsigned ICmpInst(s).
+Special handling is required for unsigned operands to ensure that if
+MSB (aka the Sign bit) is set for an operands in an unsigned ICmpInst
+it should wrap around.
+
+@param IsStrictUpperBound holds information on the predicate relation
+between TestVal and UpperBound, i.e,
+TestVal < UpperBound  OR  TestVal <= UpperBound
+
+================================================================================
+
+[28] 文件: lib/Analysis/ScopBuilder.cpp : 第 1186 行
+------------------------------------------------------------
+To generate a schedule for the elements in a Region we traverse the Region
+in reverse-post-order and add the contained RegionNodes in traversal order
+to the schedule of the loop that is currently at the top of the LoopStack.
+For loop-free codes, this results in a correct sequential ordering.
+
+Example:
+          bb1(0)
+        /     \.
+     bb2(1)   bb3(2)
+        \    /  \.
+         bb4(3)  bb5(4)
+            \   /
+             bb6(5)
+
+Including loops requires additional processing. Whenever a loop header is
+encountered, the corresponding loop is added to the @p LoopStack. Starting
+from an empty schedule, we first process all RegionNodes that are within
+this loop and complete the sequential schedule at this loop-level before
+processing about any other nodes. To implement this
+loop-nodes-first-processing, the reverse post-order traversal is
+insufficient. Hence, we additionally check if the traversal yields
+sub-regions or blocks that are outside the last loop on the @p LoopStack.
+These region-nodes are then queue and only traverse after the all nodes
+within the current loop have been processed.
+
+================================================================================
+
+[29] 文件: lib/Analysis/ScopBuilder.cpp : 第 1299 行
+------------------------------------------------------------
+If any of the loops has a disable_nonforced heuristic, mark the
+entire SCoP as such. The ISL rescheduler can only reschedule the
+SCoP in its entirety.
+TODO: ScopDetection could avoid including such loops or warp them as
+boxed loop. It still needs to pass-through loop with user-defined
+metadata.
+
+================================================================================
+
+[30] 文件: lib/Analysis/ScopBuilder.cpp : 第 1781 行
+------------------------------------------------------------
+Generate a name for a statement.
+
+@param BB     The basic block the statement will represent.
+@param BBIdx  The index of the @p BB relative to other BBs/regions.
+@param Count  The index of the created statement in @p BB.
+@param IsMain Whether this is the main of all statement for @p BB. If true,
+              no suffix will be added.
+@param IsLast Uses a special indicator for the last statement of a BB.
+
+================================================================================
+
+[31] 文件: lib/Analysis/ScopBuilder.cpp : 第 1805 行
+------------------------------------------------------------
+Generate a name for a statement that represents a non-affine subregion.
+
+@param R    The region the statement will represent.
+@param RIdx The index of the @p R relative to other BBs/regions.
+
+================================================================================
+
+[32] 文件: lib/Analysis/ScopBuilder.cpp : 第 1836 行
+------------------------------------------------------------
+Is @p Inst an ordered instruction?
+
+An unordered instruction is an instruction, such that a sequence of
+unordered instructions can be permuted without changing semantics. Any
+instruction for which this is not always the case is ordered.
+
+================================================================================
+
+[33] 文件: lib/Analysis/ScopBuilder.cpp : 第 1867 行
+------------------------------------------------------------
+Ensure that the order of ordered instructions does not change.
+
+If we encounter an ordered instruction enclosed in instructions belonging to
+a different statement (which might as well contain ordered instructions, but
+this is not tested here), join them.
+
+================================================================================
+
+[34] 文件: lib/Analysis/ScopBuilder.cpp : 第 1906 行
+------------------------------------------------------------
+If the BasicBlock has an edge from itself, ensure that the PHI WRITEs for
+the incoming values from this block are executed after the PHI READ.
+
+Otherwise it could overwrite the incoming value from before the BB with the
+value for the next execution. This can happen if the PHI WRITE is added to
+the statement with the instruction that defines the incoming value (instead
+of the last statement of the same BB). To ensure that the PHI READ and WRITE
+are in order, we put both into the statement. PHI WRITEs are always executed
+after PHI READs when they are in the same statement.
+
+TODO: This is an overpessimization. We only have to ensure that the PHI
+WRITE is not put into a statement containing the PHI itself. That could also
+be done by
+- having all (strongly connected) PHIs in a single statement,
+- unite only the PHIs in the operand tree of the PHI WRITE (because it only
+  has a chance of being lifted before a PHI by being in a statement with a
+  PHI that comes before in the basic block), or
+- when uniting statements, ensure that no (relevant) PHIs are overtaken.
+
+================================================================================
+
+[35] 文件: lib/Analysis/ScopBuilder.cpp : 第 2818 行
+------------------------------------------------------------
+Check if an access range is too complex.
+
+An access range is too complex, if it contains either many disjuncts or
+very complex expressions. As a simple heuristic, we assume if a set to
+be too complex if the sum of existentially quantified dimensions and
+set dimensions is larger than a threshold. This reliably detects both
+sets with many disjuncts as well as sets with many divisions as they
+arise in h264.
+
+@param AccessRange The range to check for complexity.
+
+@returns True if the access range is too complex.
+
+================================================================================
+
+[36] 文件: lib/Analysis/ScopBuilder.cpp : 第 3133 行
+------------------------------------------------------------
+Find the canonical scop array info object for a set of invariant load
+hoisted loads. The canonical array is the one that corresponds to the
+first load in the list of accesses which is used as base pointer of a
+scop array.
+
+================================================================================
+
+[37] 文件: lib/Analysis/ScopBuilder.cpp : 第 3242 行
+------------------------------------------------------------
+Add the minimal/maximal access in @p Set to @p User.
+
+@return True if more accesses should be added, false if we reached the
+        maximal number of run-time checks to be generated.
+
+================================================================================
+
+[38] 文件: lib/Analysis/ScopBuilder.cpp : 第 3554 行
+------------------------------------------------------------
+Check the consistency of every statement's MemoryAccesses.
+
+The check is carried out by expecting the "physical" kind of use (derived
+from the BasicBlocks instructions resides in) to be same as the "virtual"
+kind of use (derived from a statement's MemoryAccess).
+
+The "physical" uses are taken by ensureValueRead to determine whether to
+create MemoryAccesses. When done, the kind of scalar access should be the
+same no matter which way it was derived.
+
+The MemoryAccesses might be changed by later SCoP-modifying passes and hence
+can intentionally influence on the kind of uses (not corresponding to the
+"physical" anymore, hence called "virtual"). The CodeGenerator therefore has
+to pick up the virtual uses. But here in the code generator, this has not
+happened yet, such that virtual and physical uses are equivalent.
+
+================================================================================
+
+[39] 文件: lib/Analysis/DependenceInfo.cpp : 第 197 行
+------------------------------------------------------------
+Compute the privatization dependences for a given dependency @p Map
+
+Privatization dependences are widened original dependences which originate
+or end in a reduction access. To compute them we apply the transitive close
+of the reduction dependences (which maps each iteration of a reduction
+statement to all following ones) on the RAW/WAR/WAW dependences. The
+dependences which start or end at a reduction statement will be extended to
+depend on all following reduction statement iterations as well.
+Note: "Following" here means according to the reduction dependences.
+
+For the input:
+
+ S0:   *sum = 0;
+       for (int i = 0; i < 1024; i++)
+ S1:     *sum += i;
+ S2:   *sum = *sum * 3;
+
+we have the following dependences before we add privatization dependences:
+
+  RAW:
+    { S0[] -> S1[0]; S1[1023] -> S2[] }
+  WAR:
+    {  }
+  WAW:
+    { S0[] -> S1[0]; S1[1024] -> S2[] }
+  RED:
+    { S1[i0] -> S1[1 + i0] : i0 >= 0 and i0 <= 1022 }
+
+and afterwards:
+
+  RAW:
+    { S0[] -> S1[i0] : i0 >= 0 and i0 <= 1023;
+      S1[i0] -> S2[] : i0 >= 0 and i0 <= 1023}
+  WAR:
+    {  }
+  WAW:
+    { S0[] -> S1[i0] : i0 >= 0 and i0 <= 1023;
+      S1[i0] -> S2[] : i0 >= 0 and i0 <= 1023}
+  RED:
+    { S1[i0] -> S1[1 + i0] : i0 >= 0 and i0 <= 1022 }
+
+Note: This function also computes the (reverse) transitive closure of the
+      reduction dependences.
+
+================================================================================
+
+[40] 文件: lib/Support/ISLTools.cpp : 第 23 行
+------------------------------------------------------------
+Create a map that shifts one dimension by an offset.
+
+Example:
+makeShiftDimAff({ [i0, i1] -> [o0, o1] }, 1, -2)
+  = { [i0, i1] -> [i0, i1 - 1] }
+
+@param Space  The map space of the result. Must have equal number of in- and
+              out-dimensions.
+@param Pos    Position to shift.
+@param Amount Value added to the shifted dimension.
+
+@return An isl_multi_aff for the map with this shifted dimension.
+
+================================================================================
+
+[41] 文件: lib/Support/ISLTools.cpp : 第 44 行
+------------------------------------------------------------
+Construct a map that swaps two nested tuples.
+
+@param FromSpace1 { Space1[] }
+@param FromSpace2 { Space2[] }
+
+@return { [Space1[] -> Space2[]] -> [Space2[] -> Space1[]] }
+
+================================================================================
+
+[42] 文件: lib/Support/ISLTools.cpp : 第 616 行
+------------------------------------------------------------
+Determine the sorting order of the sets @p A and @p B without considering
+the space structure.
+
+Ordering is based on the lower bounds of the set's dimensions. First
+dimensions are considered first.
+
+================================================================================
+
+[43] 文件: lib/Support/ISLTools.cpp : 第 673 行
+------------------------------------------------------------
+Compare the sets @p A and @p B according to their nested space structure.
+Returns 0 if the structure is considered equal.
+If @p ConsiderTupleLen is false, the number of dimensions in a tuple are
+ignored, i.e. a tuple with the same name but different number of dimensions
+are considered equal.
+
+================================================================================
+
+[44] 文件: lib/Support/ISLTools.cpp : 第 738 行
+------------------------------------------------------------
+Print a string representation of @p USet to @p OS.
+
+The pieces of @p USet are printed in a sorted order. Spaces with equal or
+similar nesting structure are printed together. Compared to isl's own
+printing function the uses the structure itself as base of the sorting, not
+a hash of it. It ensures that e.g. maps spaces with same domain structure
+are printed together. Set pieces with same structure are printed in order of
+their lower bounds.
+
+@param USet     Polyhedra to print.
+@param OS       Target stream.
+@param Simplify Whether to simplify the polyhedron before printing.
+@param IsMap    Whether @p USet is a wrapped map. If true, sets are
+                unwrapped before printing to again appear as a map.
+
+================================================================================
+
+[45] 文件: lib/Support/ISLTools.cpp : 第 829 行
+------------------------------------------------------------
+Make each point of a set explicit.
+
+"Expanding" makes each point a set contains explicit. That is, the result is
+a set of singleton polyhedra. Unbounded dimensions are not expanded.
+
+Example:
+  { [i] : 0 <= i < 2 }
+is expanded to:
+  { [0]; [1] }
+
+================================================================================
+
+[46] 文件: lib/Support/VirtualInstruction.cpp : 第 220 行
+------------------------------------------------------------
+Add non-removable memory accesses in @p Stmt to @p RootInsts.
+
+@param Local If true, all writes are assumed to escape. markAndSweep
+algorithms can use this to be applicable to a single ScopStmt only without
+the risk of removing definitions required by other statements.
+             If false, only writes for SCoP-escaping values are roots.  This
+             is global mode, where such writes must be marked by theirs uses
+             in order to be reachable.
+
+================================================================================
+
+[47] 文件: lib/Support/VirtualInstruction.cpp : 第 264 行
+------------------------------------------------------------
+Mark accesses and instructions as used if they are reachable from a root,
+walking the operand trees.
+
+@param S              The SCoP to walk.
+@param LI             The LoopInfo Analysis.
+@param RootInsts      List of root instructions.
+@param RootAccs       List of root accesses.
+@param UsesInsts[out] Receives all reachable instructions, including the
+roots.
+@param UsedAccs[out]  Receives all reachable accesses, including the roots.
+@param OnlyLocal      If non-nullptr, restricts walking to a single
+statement.
+
+================================================================================
+
+[48] 文件: lib/Support/ScopHelper.cpp : 第 231 行
+------------------------------------------------------------
+ScopExpander generates IR the the value of a SCEV that represents a value
+from a SCoP.
+
+IMPORTANT: There are two ScalarEvolutions at play here. First, the SE that
+was used to analyze the original SCoP (not actually referenced anywhere
+here, but passed as argument to make the distinction clear). Second, GenSE
+which is the SE for the function that the code is emitted into. SE and GenSE
+may be different when the generated code is to be emitted into an outlined
+function, e.g. for a parallel loop. That is, each SCEV is to be used only by
+the SE that "owns" it and ScopExpander handles the translation between them.
+The SCEVVisitor methods are only to be called on SCEVs of the original SE.
+Their job is to create a new SCEV for GenSE. The nested SCEVExpander is to
+be used only with SCEVs belonging to GenSE. Currently SCEVs do not store a
+reference to the ScalarEvolution they belong to, so a mixup does not
+immediately cause a crash but certainly is a violation of its interface.
+
+The SCEVExpander will __not__ generate any code for an existing SDiv/SRem
+instruction but just use it, if it is referenced as a SCEVUnknown. We want
+however to generate new code if the instruction is in the analyzed region
+and we generate code outside/in front of that region. Hence, we generate the
+code for the SDiv/SRem operands in front of the analyzed region and then
+create a new SDiv/SRem operation there too.
+
+================================================================================
+
+[49] 文件: lib/Support/ScopHelper.cpp : 第 376 行
+------------------------------------------------------------
+The following functions will just traverse the SCEV and rebuild it using
+GenSE and the new operands returned by the traversal.
+
+{
+
+================================================================================
+
+[50] 文件: lib/Support/RegisterPasses.cpp : 第 203 行
+------------------------------------------------------------
+Initialize Polly passes when library is loaded.
+
+We use the constructor of a statically declared object to initialize the
+different Polly passes right after the Polly library is loaded. This ensures
+that the Polly passes are available e.g. in the 'opt' tool.
+
+================================================================================
+
+[51] 文件: lib/Support/RegisterPasses.cpp : 第 268 行
+------------------------------------------------------------
+Register Polly passes such that they form a polyhedral optimizer.
+
+The individual Polly passes are registered in the pass manager such that
+they form a full polyhedral optimizer. The flow of the optimizer starts with
+a set of preparing transformations that canonicalize the LLVM-IR such that
+the LLVM-IR is easier for us to understand and to optimizes. On the
+canonicalized LLVM-IR we first run the ScopDetection pass, which detects
+static control flow regions. Those regions are then translated by the
+ScopInfo pass into a polyhedral representation. As a next step, a scheduling
+optimizer is run on the polyhedral representation and finally the optimized
+polyhedral representation is code generated back to LLVM-IR.
+
+Besides this core functionality, we optionally schedule passes that provide
+a graphical view of the scops (Polly[Only]Viewer, Polly[Only]Printer), that
+allow the export/import of the polyhedral representation
+(JSCON[Exporter|Importer]) or that show the cfg after code generation.
+
+For certain parts of the Polly optimizer, several alternatives are provided:
+
+As scheduling optimizer we support the isl scheduling optimizer
+(http://freecode.com/projects/isl).
+It is also possible to run Polly with no optimizer. This mode is mainly
+provided to analyze the run and compile time changes caused by the
+scheduling optimizer.
+
+Polly supports the isl internal code generator.
+
+================================================================================
+
+[52] 文件: lib/Support/RegisterPasses.cpp : 第 295 行
+------------------------------------------------------------
+Add the pass sequence required for Polly to the New Pass Manager.
+
+@param PM           The pass manager itself.
+@param Level        The optimization level. Used for the cleanup of Polly's
+                    output.
+@param EnableForOpt Whether to add Polly IR transformations. If False, only
+                    the analysis passes are added, skipping Polly itself.
+                    The IR may still be modified.
+
+================================================================================
+
+[53] 文件: lib/Support/RegisterPasses.cpp : 第 567 行
+------------------------------------------------------------
+Register Polly to be available as an optimizer
+
+
+We can currently run Polly at two different points int the pass manager.
+a) very early, b) right before the vectorizer.
+
+The default is currently a), to register Polly such that it runs as early as
+possible. This has several implications:
+
+  1) We need to schedule more canonicalization passes
+
+  As nothing is run before Polly, it is necessary to run a set of preparing
+  transformations before Polly to canonicalize the LLVM-IR and to allow
+  Polly to detect and understand the code.
+
+  2) We get the full -O3 optimization sequence after Polly
+
+  The LLVM-IR that is generated by Polly has been optimized on a high level,
+  but it may be rather inefficient on the lower/scalar level. By scheduling
+  Polly before all other passes, we have the full sequence of -O3
+  optimizations behind us, such that inefficiencies on the low level can
+  be optimized away.
+
+We are currently evaluating the benefit or running Polly at b). b) is nice
+as everything is fully inlined and canonicalized, but we need to be able to
+handle LICMed code to make it useful.
+
+================================================================================
+
+[54] 文件: lib/Support/SCEVValidator.cpp : 第 16 行
+------------------------------------------------------------
+The type of a SCEV
+
+To check for the validity of a SCEV we assign to each SCEV a type. The
+possible types are INT, PARAM, IV and INVALID. The order of the types is
+important. The subexpressions of SCEV with a type X can only have a type
+that is smaller or equal than X.
+
+================================================================================
+
+[55] 文件: lib/Support/SCEVValidator.cpp : 第 89 行
+------------------------------------------------------------
+Merge a result.
+
+This means to merge the parameters and to set the Type to the most
+specific Type that matches both.
+
+================================================================================
+
+[56] 文件: lib/Transform/FlattenAlgo.cpp : 第 39 行
+------------------------------------------------------------
+Whether a dimension of a set is (lower and upper) bounded by a constant or
+parameters, i.e. there are two expressions Min_p and Max_p of the parameters
+p, such that every value x of the chosen dimensions is
+Min_p <= x <= Max_p.
+
+================================================================================
+
+[57] 文件: lib/Transform/FlattenAlgo.cpp : 第 112 行
+------------------------------------------------------------
+Remove @p n dimensions from @p UMap's range, starting at @p first.
+
+It is assumed that all maps in the maps have at least the necessary number
+of out dimensions.
+
+================================================================================
+
+[58] 文件: lib/Transform/FlattenAlgo.cpp : 第 146 行
+------------------------------------------------------------
+Flatten a sequence-like first dimension.
+
+A sequence-like scatter dimension is constant, or at least only small
+variation, typically the result of ordering a sequence of different
+statements. An example would be:
+  { Stmt_A[] -> [0, X, ...]; Stmt_B[] -> [1, Y, ...] }
+to schedule all instances of Stmt_A before any instance of Stmt_B.
+
+To flatten, first begin with an offset of zero. Then determine the lowest
+possible value of the dimension, call it "i" [In the example we start at 0].
+Considering only schedules with that value, consider only instances with
+that value and determine the extent of the next dimension. Let l_X(i) and
+u_X(i) its minimum (lower bound) and maximum (upper bound) value. Add them
+as "Offset + X - l_X(i)" to the new schedule, then add "u_X(i) - l_X(i) + 1"
+to Offset and remove all i-instances from the old schedule. Repeat with the
+remaining lowest value i' until there are no instances in the old schedule
+left.
+The example schedule would be transformed to:
+  { Stmt_X[] -> [X - l_X, ...]; Stmt_B -> [l_X - u_X + 1 + Y - l_Y, ...] }
+
+================================================================================
+
+[59] 文件: lib/Transform/FlattenAlgo.cpp : 第 245 行
+------------------------------------------------------------
+Flatten a loop-like first dimension.
+
+A loop-like dimension is one that depends on a variable (usually a loop's
+induction variable). Let the input schedule look like this:
+  { Stmt[i] -> [i, X, ...] }
+
+To flatten, we determine the largest extent of X which may not depend on the
+actual value of i. Let l_X() the smallest possible value of X and u_X() its
+largest value. Then, construct a new schedule
+  { Stmt[i] -> [i * (u_X() - l_X() + 1), ...] }
+
+================================================================================
+
+[60] 文件: lib/Transform/Simplify.cpp : 第 38 行
+------------------------------------------------------------
+Number of max disjuncts we allow in removeOverwrites(). This is to avoid
+that the analysis of accesses in a statement is becoming too complex. Chosen
+to be relatively small because all the common cases should access only few
+array elements per statement.
+
+================================================================================
+
+[61] 文件: lib/Transform/Simplify.cpp : 第 86 行
+------------------------------------------------------------
+Like isl::union_map::unite, but may also return an underapproximated
+result if getting too complex.
+
+This is implemented by adding disjuncts to the results until the limit is
+reached.
+
+================================================================================
+
+[62] 文件: lib/Transform/Simplify.cpp : 第 157 行
+------------------------------------------------------------
+Remove statements that are never executed due to their domains being
+empty.
+
+In contrast to Scop::simplifySCoP, this removes based on the SCoP's
+effective domain, i.e. including the SCoP's context as used by some other
+simplification methods in this pass. This is necessary because the
+analysis on empty domains is unreliable, e.g. remove a scalar value
+definition MemoryAccesses, but not its use.
+
+================================================================================
+
+[63] 文件: lib/Transform/Simplify.cpp : 第 167 行
+------------------------------------------------------------
+Remove writes that are overwritten unconditionally later in the same
+statement.
+
+There must be no read of the same value between the write (that is to be
+removed) and the overwrite.
+
+================================================================================
+
+[64] 文件: lib/Transform/Simplify.cpp : 第 174 行
+------------------------------------------------------------
+Combine writes that write the same value if possible.
+
+This function is able to combine:
+- Partial writes with disjoint domain.
+- Writes that write to the same array element.
+
+In all cases, both writes must write the same values.
+
+================================================================================
+
+[65] 文件: lib/Transform/Simplify.cpp : 第 222 行
+------------------------------------------------------------
+Remove statements that are never executed due to their domains being
+empty.
+
+In contrast to Scop::simplifySCoP, this removes based on the SCoP's
+effective domain, i.e. including the SCoP's context as used by some other
+simplification methods in this pass. This is necessary because the
+analysis on empty domains is unreliable, e.g. remove a scalar value
+definition MemoryAccesses, but not its use.
+
+================================================================================
+
+[66] 文件: lib/Transform/Simplify.cpp : 第 246 行
+------------------------------------------------------------
+Remove writes that are overwritten unconditionally later in the same
+statement.
+
+There must be no read of the same value between the write (that is to be
+removed) and the overwrite.
+
+================================================================================
+
+[67] 文件: lib/Transform/Simplify.cpp : 第 302 行
+------------------------------------------------------------
+Combine writes that write the same value if possible.
+
+This function is able to combine:
+- Partial writes with disjoint domain.
+- Writes that write to the same array element.
+
+In all cases, both writes must write the same values.
+
+================================================================================
+
+[68] 文件: lib/Transform/MatmulOptimizer.cpp : 第 151 行
+------------------------------------------------------------
+Parameters of the micro kernel.
+
+Parameters, which determine sizes of rank-1 (i.e., outer product) update
+used in the optimized matrix multiplication.
+
+================================================================================
+
+[69] 文件: lib/Transform/MatmulOptimizer.cpp : 第 160 行
+------------------------------------------------------------
+Parameters of the macro kernel.
+
+Parameters, which determine sizes of blocks of partitioned matrices
+used in the optimized matrix multiplication.
+
+================================================================================
+
+[70] 文件: lib/Transform/MatmulOptimizer.cpp : 第 170 行
+------------------------------------------------------------
+Parameters of the matrix multiplication operands.
+
+Parameters, which describe access relations that represent operands of the
+matrix multiplication.
+
+================================================================================
+
+[71] 文件: lib/Transform/MatmulOptimizer.cpp : 第 184 行
+------------------------------------------------------------
+Parameters of the tensor contraction operands.
+
+A general d-dimensional tensor T ∈ R ^ Nu0 x ... x Nud−1 can be defined
+as the set of scalar elements indexed by the set of indices u0 ... ud,
+
+T ≡ {Anu0...nud−1 ∈ R | (u0,...,ud−1) ∈ Nu0 x ... x Nud−1}.
+
+Let A, B, and C be dA, dB, and dC-dimensional tensors, respectively.
+Let the free and the contracted indices of the tensor A be grouped into
+two bundles I = i0...ir−1 and P = p0...pt−1, respectively. Similarly,
+the free and the contracted indices of B are grouped into bundles
+J = j0..js−1 and P and the free indices of C are grouped into
+bundles I and J.
+
+Tensor contraction (TC) of tensors A, B into tensor C can be represented as
+C(shuffle(I,J))=∑α·A(shuffle(I,P))·B(shuffle(P,J))+β·C(shuffle(I,J)),
+where ∑ is a summation over all contracted indices of P,
+α, β ∈ R, Npi is the length of the tensor dimension that corresponds
+to the index pi, A(shuffle(I, P)), B(shuffle(P, J)), C(shuffle(I, J)) are
+accesses to tensors A, B, C, respectively,
+shuffle(I, J), shuffle(I, P), and shuffle(P, J) are permutations of
+the enclosed indices.
+
+Multiplication of C(shuffle(I,J)) by β can be moved into a different SCoP
+statement by loop distribution, which is done by the isl scheduler.
+
+================================================================================
+
+[72] 文件: lib/Transform/MatmulOptimizer.cpp : 第 210 行
+------------------------------------------------------------
+such a transformation.
+
+TCInfoTy contains parameters, which describe access relations that represent
+operands of the tensor contraction.
+
+================================================================================
+
+[73] 文件: lib/Transform/MatmulOptimizer.cpp : 第 240 行
+------------------------------------------------------------
+@{
+Sizes of tensor dimensions for corresponding input dimensions of
+the schedule space. The size of the tensor dimension can be larger than
+the size of the corresponding input dimension of the schedule space.
+This does not correspond to a tensor contraction. However, such a pattern
+will be optimized by the transformation.
+
+================================================================================
+
+[74] 文件: lib/Transform/MatmulOptimizer.cpp : 第 261 行
+------------------------------------------------------------
+Create an isl::union_set, which describes the option of the form
+[isolate[] -> unroll[x]].
+
+@param Ctx An isl::ctx, which is used to create the isl::union_set.
+
+================================================================================
+
+[75] 文件: lib/Transform/MatmulOptimizer.cpp : 第 277 行
+------------------------------------------------------------
+Permute the two dimensions of the isl map.
+
+Permute @p DstPos and @p SrcPos dimensions of the isl map @p Map that
+have type @p DimType.
+
+@param Map     The isl map to be modified.
+@param DimType The type of the dimensions.
+@param DstPos  The first dimension.
+@param SrcPos  The second dimension.
+@return        The modified map.
+
+================================================================================
+
+[76] 文件: lib/Transform/MatmulOptimizer.cpp : 第 313 行
+------------------------------------------------------------
+Check the form of the access relation.
+
+Check that the access relation @p AccMap has the form M[i][j], where i
+is a @p FirstPos and j is a @p SecondPos.
+
+@param AccMap    The access relation to be checked.
+@param FirstPos  The index of the input dimension that is mapped to
+                 the first output dimension.
+@param SecondPos The index of the input dimension that is mapped to the
+                 second output dimension.
+@return          True in case @p AccMap has the expected form and false,
+                 otherwise.
+
+================================================================================
+
+[77] 文件: lib/Transform/MatmulOptimizer.cpp : 第 369 行
+------------------------------------------------------------
+Does the memory access represent a non-scalar operand of the matrix
+multiplication.
+
+Check that the memory access @p MemAccess is the read access to a non-scalar
+operand of the matrix multiplication or its result.
+
+@param MemAccess The memory access to be checked.
+@param MMI       Parameters of the matrix multiplication operands.
+@return          True in case the memory access represents the read access
+                 to a non-scalar operand of the matrix multiplication and
+                 false, otherwise.
+
+================================================================================
+
+[78] 文件: lib/Transform/MatmulOptimizer.cpp : 第 401 行
+------------------------------------------------------------
+Check accesses to operands of the matrix multiplication.
+
+Check that accesses of the SCoP statement, which corresponds to
+the partial schedule @p PartialSchedule, are scalar in terms of loops
+containing the matrix multiplication, in case they do not represent
+accesses to the non-scalar operands of the matrix multiplication or
+its result.
+
+@param  PartialSchedule The partial schedule of the SCoP statement.
+@param  MMI             Parameters of the matrix multiplication operands.
+@return                 True in case the corresponding SCoP statement
+                        represents matrix multiplication and false,
+                        otherwise.
+
+================================================================================
+
+[79] 文件: lib/Transform/MatmulOptimizer.cpp : 第 441 行
+------------------------------------------------------------
+Check for dependencies corresponding to the matrix multiplication.
+
+Check that there is only true dependence of the form
+S(..., k, ...) -> S(..., k + 1, …), where S is the SCoP statement
+represented by @p Schedule and k is @p Pos. Such a dependence corresponds
+to the dependency produced by the matrix multiplication.
+
+@param  Schedule The schedule of the SCoP statement.
+@param  D The SCoP dependencies.
+@param  Pos The parameter to describe an acceptable true dependence.
+            In case it has a negative value, try to determine its
+            acceptable value.
+@return True in case dependencies correspond to the matrix multiplication
+        and false, otherwise.
+
+================================================================================
+
+[80] 文件: lib/Transform/MatmulOptimizer.cpp : 第 476 行
+------------------------------------------------------------
+Check if the SCoP statement could probably be optimized with analytical
+modeling.
+
+containsMatrMult tries to determine whether the following conditions
+are true:
+1. The last memory access modeling an array, MA1, represents writing to
+   memory and has the form S(..., i1, ..., i2, ...) -> M(i1, i2) or
+   S(..., i2, ..., i1, ...) -> M(i1, i2), where S is the SCoP statement
+   under consideration.
+2. There is only one loop-carried true dependency, and it has the
+   form S(..., i3, ...) -> S(..., i3 + 1, ...), and there are no
+   loop-carried or anti dependencies.
+3. SCoP contains three access relations, MA2, MA3, and MA4 that represent
+   reading from memory and have the form S(..., i3, ...) -> M(i1, i3),
+   S(..., i3, ...) -> M(i3, i2), S(...) -> M(i1, i2), respectively,
+   and all memory accesses of the SCoP that are different from MA1, MA2,
+   MA3, and MA4 have stride 0, if the innermost loop is exchanged with any
+   of loops i1, i2 and i3.
+
+@param PartialSchedule The PartialSchedule that contains a SCoP statement
+       to check.
+@D     The SCoP dependencies.
+@MMI   Parameters of the matrix multiplication operands.
+
+================================================================================
+
+[81] 文件: lib/Transform/MatmulOptimizer.cpp : 第 531 行
+------------------------------------------------------------
+Permute two dimensions of the band node.
+
+Permute FirstDim and SecondDim dimensions of the Node.
+
+@param Node The band node to be modified.
+@param FirstDim The first dimension to be permuted.
+@param SecondDim The second dimension to be permuted.
+
+================================================================================
+
+[82] 文件: lib/Transform/MatmulOptimizer.cpp : 第 565 行
+------------------------------------------------------------
+Create the BLIS macro-kernel.
+
+We create the BLIS macro-kernel by applying a combination of tiling
+of dimensions of the band node and interchanging of two innermost
+modified dimensions. The values of MacroKernelParams's fields are used
+as tile sizes.
+
+@param Node The schedule node to be modified.
+@param MacroKernelParams Parameters of the macro kernel
+                         to be used as tile sizes.
+
+================================================================================
+
+[83] 文件: lib/Transform/MatmulOptimizer.cpp : 第 595 行
+------------------------------------------------------------
+Get the size of the widest type of the matrix multiplication operands
+in bytes, including alignment padding.
+
+@param MMI Parameters of the matrix multiplication operands.
+@return The size of the widest type of the matrix multiplication operands
+        in bytes, including alignment padding.
+
+================================================================================
+
+[84] 文件: lib/Transform/MatmulOptimizer.cpp : 第 610 行
+------------------------------------------------------------
+Get the size of the widest type of the matrix multiplication operands
+in bits.
+
+@param MMI Parameters of the matrix multiplication operands.
+@return The size of the widest type of the matrix multiplication operands
+        in bits.
+
+================================================================================
+
+[85] 文件: lib/Transform/MatmulOptimizer.cpp : 第 625 行
+------------------------------------------------------------
+Get parameters of the BLIS micro kernel.
+
+We choose the Mr and Nr parameters of the micro kernel to be large enough
+such that no stalls caused by the combination of latencies and dependencies
+are introduced during the updates of the resulting matrix of the matrix
+multiplication. However, they should also be as small as possible to
+release more registers for entries of multiplied matrices.
+
+@param TTI Target Transform Info.
+@param MMI Parameters of the matrix multiplication operands.
+@return The structure of type MicroKernelParamsTy.
+@see MicroKernelParamsTy
+
+================================================================================
+
+[86] 文件: lib/Transform/MatmulOptimizer.cpp : 第 697 行
+------------------------------------------------------------
+Get parameters of the BLIS macro kernel.
+
+During the computation of matrix multiplication, blocks of partitioned
+matrices are mapped to different layers of the memory hierarchy.
+To optimize data reuse, blocks should be ideally kept in cache between
+iterations. Since parameters of the macro kernel determine sizes of these
+blocks, there are upper and lower bounds on these parameters.
+
+@param TTI Target Transform Info.
+@param MicroKernelParams Parameters of the micro-kernel
+                         to be taken into account.
+@param MMI Parameters of the matrix multiplication operands.
+@return The structure of type MacroKernelParamsTy.
+@see MacroKernelParamsTy
+@see MicroKernelParamsTy
+
+================================================================================
+
+[87] 文件: lib/Transform/MatmulOptimizer.cpp : 第 756 行
+------------------------------------------------------------
+Create an access relation that is specific to
+       the matrix multiplication pattern.
+
+Create an access relation of the following form:
+[O0, O1, O2, O3, O4, O5, O6, O7, O8] -> [OI, O5, OJ]
+where I is @p FirstDim, J is @p SecondDim.
+
+It can be used, for example, to create relations that helps to consequently
+access elements of operands of a matrix multiplication after creation of
+the BLIS micro and macro kernels.
+
+@see ScheduleTreeOptimizer::createMicroKernel
+@see ScheduleTreeOptimizer::createMacroKernel
+
+Subsequently, the described access relation is applied to the range of
+@p MapOldIndVar, that is used to map original induction variables to
+the ones, which are produced by schedule transformations. It helps to
+define relations using a new space and, at the same time, keep them
+in the original one.
+
+@param MapOldIndVar The relation, which maps original induction variables
+                    to the ones, which are produced by schedule
+                    transformations.
+@param FirstDim, SecondDim The input dimensions that are used to define
+       the specified access relation.
+@return The specified access relation.
+
+================================================================================
+
+[88] 文件: lib/Transform/MatmulOptimizer.cpp : 第 896 行
+------------------------------------------------------------
+Apply the packing transformation.
+
+The packing transformation can be described as a data-layout
+transformation that requires to introduce a new array, copy data
+to the array, and change memory access locations to reference the array.
+It can be used to ensure that elements of the new array are read in-stride
+access, aligned to cache lines boundaries, and preloaded into certain cache
+levels.
+
+As an example let us consider the packing of the array A that would help
+to read its elements with in-stride access. An access to the array A
+is represented by an access relation that has the form
+S[i, j, k] -> A[i, k]. The scheduling function of the SCoP statement S has
+the form S[i,j, k] -> [floor((j mod Nc) / Nr), floor((i mod Mc) / Mr),
+k mod Kc, j mod Nr, i mod Mr].
+
+To ensure that elements of the array A are read in-stride access, we add
+a new array Packed_A[Mc/Mr][Kc][Mr] to the SCoP, using
+Scop::createScopArrayInfo, change the access relation
+S[i, j, k] -> A[i, k] to
+S[i, j, k] -> Packed_A[floor((i mod Mc) / Mr), k mod Kc, i mod Mr], using
+MemoryAccess::setNewAccessRelation, and copy the data to the array, using
+the copy statement created by Scop::addScopStmt.
+
+@param Node The schedule node to be optimized.
+@param MapOldIndVar The relation, which maps original induction variables
+                    to the ones, which are produced by schedule
+                    transformations.
+@param MicroParams, MacroParams Parameters of the BLIS kernel
+                                to be taken into account.
+@param MMI Parameters of the matrix multiplication operands.
+@return The optimized schedule node.
+
+================================================================================
+
+[89] 文件: lib/Transform/MatmulOptimizer.cpp : 第 950 行
+------------------------------------------------------------
+Get a relation mapping induction variables produced by schedule
+transformations to the original ones.
+
+@param Node The schedule node produced as the result of creation
+       of the BLIS kernels.
+@param MicroKernelParams, MacroKernelParams Parameters of the BLIS kernel
+                                            to be taken into account.
+@return  The relation mapping original induction variables to the ones
+         produced by schedule transformation.
+@see ScheduleTreeOptimizer::createMicroKernel
+@see ScheduleTreeOptimizer::createMacroKernel
+@see getMacroKernelParams
+
+================================================================================
+
+[90] 文件: lib/Transform/MatmulOptimizer.cpp : 第 975 行
+------------------------------------------------------------
+Isolate a set of partial tile prefixes and unroll the isolated part.
+
+The set should ensure that it contains only partial tile prefixes that have
+exactly Mr x Nr iterations of the two innermost loops produced by
+the optimization of the matrix multiplication. Mr and Nr are parameters of
+the micro-kernel.
+
+In case of parametric bounds, this helps to auto-vectorize the unrolled
+innermost loops, using the SLP vectorizer.
+
+@param Node              The schedule node to be modified.
+@param MicroKernelParams Parameters of the micro-kernel
+                         to be taken into account.
+@return The modified isl_schedule_node.
+
+================================================================================
+
+[91] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1015 行
+------------------------------------------------------------
+Insert "Loop Vectorizer Disabled" mark node.
+
+@param Node The child of the mark node to be inserted.
+@return The modified isl_schedule_node.
+
+================================================================================
+
+[92] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1024 行
+------------------------------------------------------------
+Restore the initial ordering of dimensions of the band node
+
+In case the band node represents all the dimensions of the iteration
+domain, recreate the band node to restore the initial ordering of the
+dimensions.
+
+@param Node The band node to be modified.
+@return The modified schedule node.
+
+================================================================================
+
+[93] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1084 行
+------------------------------------------------------------
+Check if this node contains a partial schedule that could
+       probably be optimized with analytical modeling.
+
+isMatrMultPattern tries to determine whether the following conditions
+are true:
+1. the partial schedule contains only one statement.
+2. there are exactly three input dimensions.
+3. all memory accesses of the statement will have stride 0 or 1, if we
+   interchange loops (switch the variable used in the inner loop to
+   the outer loop).
+4. all memory accesses of the statement except from the last one, are
+   read memory access and the last one is write memory access.
+5. all subscripts of the last memory access of the statement don't
+   contain the variable used in the inner loop.
+If this is the case, we could try to use an approach that is similar to
+the one used to get close-to-peak performance of matrix multiplications.
+
+@param Node The node to check.
+@param D    The SCoP dependencies.
+@param MMI  Parameters of the matrix multiplication operands.
+
+================================================================================
+
+[94] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1118 行
+------------------------------------------------------------
+Get the dimension size.
+
+Return the size of the dimension @p Pos, which is obtained from @p SAI.
+Return -1 in the case of the first dimension of a multi-dimensional array,
+since the ScopArrayInfo class does not carry size information.
+
+@param SAI The information about the array.
+@param Pos The position of the dimension.
+@return The size of the dimension.
+
+================================================================================
+
+[95] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1139 行
+------------------------------------------------------------
+Check whether the access relation has the specified form.
+
+Check that the access relation @p AccMap has the form T[I0, …, In], where
+indexes I0, …, In are specified by @p Dimensions.
+
+@param Domain     The domain of the access relation.
+@param AccMap     The access relation to be checked.
+@param Dimensions The permutation of the subset of the input dimensions.
+@return True if @p AccMap has the expected form and false,
+        otherwise.
+
+================================================================================
+
+[96] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1177 行
+------------------------------------------------------------
+Check whether the access represents the tensor contraction operand.
+
+Check that the access relation @p AccMap has the form T[i1, …, in].
+Obtained indexes i1, …, in, their sizes and their permutation are stored
+into @p IndexSet, @p DimensionSizes, and @p Dimensions, respectively.
+
+@param Domain         The domain of the access relation.
+@param AccMap         The access relation to be checked.
+@param IndexSet       The subset of the input dimensions.
+@param DimensionSizes Sizes of the input dimensions of @p Dimensions.
+@param Dimensions     The permutation of the subset of the input dimensions.
+@return True if @p AccMap has the expected form and false,
+        otherwise.
+
+================================================================================
+
+[97] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1242 行
+------------------------------------------------------------
+Find the intersection of two sets.
+
+Find the intersection of the set @p A and the set @p B.
+
+@param A, B Sets to intersect.
+@return The set intersection.
+
+================================================================================
+
+[98] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1255 行
+------------------------------------------------------------
+Check whether the set is a superset.
+
+Check that the set @p A is a superset of @p B.
+
+@param A, B Sets to be checked.
+@return True if the set A is a superset of B.
+
+================================================================================
+
+[99] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1266 行
+------------------------------------------------------------
+Find the union of two sets.
+
+Find the union of the set @p A and the set @p B.
+
+@param A, B Sets to unite.
+@return The set union.
+
+================================================================================
+
+[100] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1279 行
+------------------------------------------------------------
+Determine the access that writes to the tensor, which contains
+the result of the tensor contraction.
+
+@param Domain        The domain of the statement.
+@param Stmt          The statement, which writes to memory.
+@param TCI           The information about the tensor contraction.
+@param IandJIndexSet The set, which contains free indexes of tensors.
+@return The determined MemoryAccess, or nullptr if there is no necessary
+        access within the SCoP.
+
+================================================================================
+
+[101] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1311 行
+------------------------------------------------------------
+Determine an access, which reads elements of an operand of the tensor
+contraction
+
+@param MemAccessPtr  The access, which reads elements of the tensor.
+@param IndexSet      The set, which contains indexes of the tensors.
+@param IandJIndexSet The set, which contains free indexes of tensors.
+@param Dimensions    The permutation of the subset of the input dimensions.
+@param TCI           The information about the tensor contraction.
+@return True if the memory access @p MemAccessPtr corresponds
+        to the tensor contraction.
+
+================================================================================
+
+[102] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1360 行
+------------------------------------------------------------
+Check that all memory accesses of the statement, except from the last
+one, are read memory accesses, which read elements of operands of the tensor
+contraction and its result.
+
+@param Domain        The domain of the statement.
+@param Stmt          The statement, which writes to memory.
+@param TCI           The information about the tensor contraction.
+@param IandJIndexSet The set, which contains free indexes of tensors.
+@return True if all read memory accesses of the statement @p Stmt correspond
+        to the tensor contraction.
+
+================================================================================
+
+[103] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1418 行
+------------------------------------------------------------
+Check accesses to operands of the tensor contraction.
+
+Check that accesses of the SCoP statement, which corresponds to
+the partial schedule @p PartialSchedule, represent accesses
+to the non-scalar operands of the tensor contraction.
+
+@param  Domain          The domain of the SCoP statement.
+@param  PartialSchedule The partial schedule of the SCoP statement.
+@param  TCI             Parameters of the tensor contraction operands.
+@return                 True if the corresponding SCoP statement
+                        represents tensor contraction and false,
+                        otherwise.
+
+================================================================================
+
+[104] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1457 行
+------------------------------------------------------------
+Check that dependency corresponds to the tensor contraction carried over
+loop dimension @p Dim.
+
+Check that the dependency has the form
+S(..., ki, max(k(i + 1)), ..., max(kn), ...) ->
+S(..., ki + 1, min(k(i + 1)), ..., min(kn), ...), where S is the SCoP
+statement. For this purpose, we analyze the set @p DepDelta, which
+represents the differences between image elements and domain elements of
+the corresponding map.
+
+@param  DepDelta    The set contains the differences between image elements
+                    and corresponding domain elements of the map, which
+                    represents the dependency.
+@param  Dim         The position of the index ki.
+@param  BoundDeltas In the case of indexes of ki, the difference between
+                    image elements and corresponding domain elements
+                    corresponds to the difference between lexicographic
+                    minimum and lexicographic maximum of the corresponding
+                    dimension of the domain of the statement.
+@param  IndexSet    Obtained indexes ki, which describe the dependency.
+@return True if dependencies correspond to the tensor contraction
+        and false, otherwise.
+
+================================================================================
+
+[105] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1522 行
+------------------------------------------------------------
+Check whether dependencies are over the complete domain.
+
+In the case of the tensor contraction RAW, WAW, WAR dependencies
+have the form
+S(..., ki, max(k(i + 1)), ..., max(kn), ...) ->
+S(..., ki + 1, min(k(i + 1)), ..., min(kn), ...), where S is the SCoP
+statement. Consequently, the domain of the dependencies
+can be described as
+Domain / Domain ∩ S(…, max(kn),…) ∩ S(…, max(k(i + 1)),…),
+where Domain is the domain of the statement S.
+
+For example, in the case of the following tensor contraction,
+corresponding domains will have the following form.
+
+An example of the tensor contraction:
+for (i = 0; i < 1024; i++)
+  for (j = 0; j < 1024; j++)
+    for (l = 0; l < 64; ++l)
+      for (w = 0; w < 64; ++w)
+        C[i][j] += A[i][l][w] * B[w][j][l];
+
+The domain of the statement:
+{ S[i0, i1, i2, i3] : i0 >= 0 and i0 <= 1023 and
+                      i1 >= 0 and i1 <= 1023 and
+                      i2 >= 0 and i2 <= 63 and
+                      i3 >= 0 and i3 <= 63 }
+
+The domain of the dependencies:
+{ S[i0, i1, i2, i3] : (i0 >= 0 and i0 <= 1023 and
+                       i1 >= 0 and i1 <= 1023 and
+                       i2 >= 0 and i2 <= 63 and
+                       i3 >= 0 and i3 <= 62) or
+                      (i3 = 63 and i0 >= 0 and i0 <= 1023 and
+                       i1 >= 0 and i1 <= 1023 and
+                       i2 >= 0 and i2 <= 62) }
+
+@param  Domain       The domain of the statement.
+@param  DepsForStmt  RAW and RED dependencies for the statement.
+@param  UpperBound   The lexicographic maximum of the elements in
+                     the @p Domain.
+@param  IndexSet     Obtained indexes ki, which describe the dependencies.
+@return True if dependencies are over the complete domain
+        and false, otherwise.
+
+================================================================================
+
+[106] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1583 行
+------------------------------------------------------------
+Check that dependencies correspond to the tensor contraction.
+
+Check that there are only true dependencies of the form
+S(..., ki, max(k(i + 1)), ..., max(kn), ...) ->
+S(..., ki + 1, min(k(i + 1)), ..., min(kn), ...), where S is the SCoP
+statement represented by @p Schedule. Such dependencies are produced by
+the tensor contraction. Obtained indexes ki are stored into @p IndexSet.
+
+The form of anti and output dependencies is specified implicitly by
+the form the SCoP statement, which is checked by subsequent analysis.
+
+@param  Schedule The schedule of the SCoP statement.
+@param  D        The SCoP dependencies.
+@param  Domain   The domain of the statement.
+@param  IndexSet Obtained indexes ki, which describe the dependencies.
+@return True if dependencies correspond to the tensor contraction
+        and false, otherwise.
+
+================================================================================
+
+[107] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1639 行
+------------------------------------------------------------
+Check if the SCoP statement could probably be optimized with analytical
+modeling.
+
+containsTCInfoTy tries to determine whether the following conditions
+are true:
+
+1. The last memory access modeling an array, MA1, represents writing to
+   memory and has the form S(..., I, ..., J, ...) -> M(shuffle(I, J)),
+   where S is the SCoP statement under consideration and shuffle(I, J)
+   is a permutation of indexes of sets I and J.
+2. There are only true dependencies of the form
+   S(..., ki, max(k(i + 1)), ..., max(kn), ...) ->
+   S(..., ki + 1, min(k(i + 1)), ..., min(kn), ...), where S is the SCoP
+   statement represented by @p Schedule and ki are indexes of the set P.
+3. SCoP contains an arbitrary number of reads from constants and only three
+   access relations, MA2, MA3, and MA4 that represent reading from memory
+   and have the form
+   S(..., I, ..., P, ...) -> M(shuffle(I, P)),
+   S(..., P, ..., J, ...) -> M(shuffle(J, P)),
+   S(...) -> M(shuffle(I, J)), respectively.
+
+@param  PartialSchedule The PartialSchedule that contains a SCoP statement
+                        to check.
+@param  D               The SCoP dependencies.
+@param  TCI             Parameters of the tensor contraction operands.
+@param  Domain          The domain of the statement.
+@return True if dependencies and memory accesses correspond to the tensor
+             contraction and false, otherwise.
+
+================================================================================
+
+[108] 文件: lib/Transform/MatmulOptimizer.cpp : 第 1686 行
+------------------------------------------------------------
+Check if this node contains a partial schedule that could
+probably be optimized with analytical modeling.
+
+isTCPattern is used to determine whether the SCoP represents a TC-like
+kernel [1], which is a perfectly nested set of loops, with a data usage
+pattern that is similar to that produced by the tensor contraction.
+
+A TC-like kernel can be defined as follows:
+
+1. It satisfies the requirements of the polyhedral model.
+2. Without loss of generality, it contains three nonempty bundles of
+   one-dimensional for-loops with induction variables that are grouped into
+   bundles I = i0...i(r-1), J = j0..j(s-1), and P = p0...p(t-1), and they
+   are incremented by one.
+3. The innermost loop body can be represented as a statement of the form
+   C(shuffle(I, J)) = E(A(shuffle(I, P)), B(shuffle(P, J)),
+   C(shuffle(I, J))), where A(shuffle(I, P)), B(shuffle(P, J)),
+   C(shuffle(I, J)) are accesses to tensors A, B, C, respectively,
+   shuffle(I, J), shuffle(I, P), and shuffle(P, J) are permutations of the
+   enclosed indices, and E is an expression that contains reads from
+   the tensors A, B, C, and an arbitrary number of reads from constants
+   with respect to bundles I, J, and P.
+
+TC can be considered as a particular case of a TC-like kernel.
+
+The order of loops with indexes from P should be preserved. Otherwise,
+isTCPattern should check if a commutative operation is used.
+
+isTCPattern performs the following steps to check whether the SCoP
+corresponds to a definition of a TC-like kernel:
+
+1. Checks that the node is the innermost band node.
+2. Checks that the partial schedule contains only one statement.
+3. Check that all ancestors of the node contain all band nodes for
+   the statement and only mark nodes interleave such band nodes. This
+   corresponds to a straightforward implementation of TC.
+4. Analyses the dependencies to determine contraction dimensions.
+5. Check that the last memory access modeling an array, represents writing
+   to the result of the TC-like kernel.
+6. Check that SCoP contains only three access relations that represent
+   reading of the operands of the TC-like kernel and an arbitrary number of
+   reads from constants.
+
+[1] - Gareev R., Grosser T., Kruse M. High-Performance Generalized Tensor
+      Operations: A Compiler-Oriented Approach // ACM Transactions
+      Architecture and Code Optimization (TACO). 2018.
+      Vol. 15, no. 3. P. 34:1–34:27. DOI: 10.1145/3235029.
+
+If this is the case, we could logically represent tensors as matrices and
+apply algorithms, which are used to get close-to-peak performance of
+matrix multiplications in manually tuned BLAS libraries (e.g., BLIS).
+
+@param Node The node to check.
+@param D    The SCoP dependencies.
+@param TCI  Parameters of the tensor contraction operands.
+
+================================================================================
+
+[109] 文件: lib/Transform/ZoneAlgo.cpp : 第 177 行
+------------------------------------------------------------
+Compute the reaching definition of a scalar.
+
+Compared to computeReachingDefinition, there is just one element which is
+accessed and therefore only a set if instances that accesses that element is
+required.
+
+@param Schedule  { DomainWrite[] -> Scatter[] }
+@param Writes    { DomainWrite[] }
+@param InclDef   Include the timepoint of the definition to the result.
+@param InclRedef Include the timepoint of the overwrite into the result.
+
+@return { Scatter[] -> DomainWrite[] }
+
+================================================================================
+
+[110] 文件: lib/Transform/ZoneAlgo.cpp : 第 204 行
+------------------------------------------------------------
+Compute the reaching definition of a scalar.
+
+This overload accepts only a single writing statement as an isl_map,
+consequently the result also is only a single isl_map.
+
+@param Schedule  { DomainWrite[] -> Scatter[] }
+@param Writes    { DomainWrite[] }
+@param InclDef   Include the timepoint of the definition to the result.
+@param InclRedef Include the timepoint of the overwrite into the result.
+
+@return { Scatter[] -> DomainWrite[] }
+
+================================================================================
+
+[111] 文件: lib/Transform/ZoneAlgo.cpp : 第 233 行
+------------------------------------------------------------
+Create a domain-to-unknown value mapping.
+
+@see makeUnknownForDomain(isl::union_set)
+
+@param Domain { Domain[] }
+
+@return { Domain[] -> ValInst[] }
+
+================================================================================
+
+[112] 文件: lib/Transform/ZoneAlgo.cpp : 第 273 行
+------------------------------------------------------------
+Check if all stores in @p Stmt store the very same value.
+
+This covers a special situation occurring in Polybench's
+covariance/correlation (which is typical for algorithms that cover symmetric
+matrices):
+
+for (int i = 0; i < n; i += 1)
+	for (int j = 0; j <= i; j += 1) {
+		double x = ...;
+		C[i][j] = x;
+		C[j][i] = x;
+	}
+
+For i == j, the same value is written twice to the same element.Double
+writes to the same element are not allowed in DeLICM because its algorithm
+does not see which of the writes is effective.But if its the same value
+anyway, it doesn't matter.
+
+LLVM passes, however, cannot simplify this because the write is necessary
+for i != j (unless it would add a condition for one of the writes to occur
+only if i != j).
+
+TODO: In the future we may want to extent this to make the checks
+      specific to different memory locations.
+
+================================================================================
+
+[113] 文件: lib/Transform/ZoneAlgo.cpp : 第 477 行
+------------------------------------------------------------
+For an llvm::Value defined in @p DefStmt, compute the RAW dependency for a
+use in every instance of @p UseStmt.
+
+@param UseStmt Statement a scalar is used in.
+@param DefStmt Statement a scalar is defined in.
+
+@return { DomainUse[] -> DomainDef[] }
+
+================================================================================
+
+[114] 文件: lib/Transform/ZoneAlgo.cpp : 第 500 行
+------------------------------------------------------------
+Return whether @p PHI refers (also transitively through other PHIs) to
+itself.
+
+loop:
+  %phi1 = phi [0, %preheader], [%phi1, %loop]
+  br i1 %c, label %loop, label %exit
+
+exit:
+  %phi2 = phi [%phi1, %bb]
+
+In this example, %phi1 is recursive, but %phi2 is not.
+
+================================================================================
+
+[115] 文件: lib/Transform/ZoneAlgo.cpp : 第 841 行
+------------------------------------------------------------
+Remove all computed PHIs out of @p Input and replace by their incoming
+value.
+
+@param Input        { [] -> ValInst[] }
+@param ComputedPHIs Set of PHIs that are replaced. Its ValInst must appear
+                    on the LHS of @p NormalizeMap.
+@param NormalizeMap { ValInst[] -> ValInst[] }
+
+================================================================================
+
+[116] 文件: lib/Transform/DeadCodeElimination.cpp : 第 68 行
+------------------------------------------------------------
+Return the set of live iterations.
+
+The set of live iterations are all iterations that write to memory and for
+which we can not prove that there will be a later write that _must_
+overwrite the same memory location and is consequently the only one that
+is visible after the execution of the SCoP.
+
+To compute the live outs, we compute for the data-locations that are
+must-written to the last statement that touches these locations. On top of
+this we add all statements that perform may-write accesses.
+
+We could be more precise by removing may-write accesses for which we know
+that they are overwritten by a must-write after. However, at the moment the
+only may-writes we introduce access the full (unbounded) array, such that
+bounded write accesses can not overwrite all of the data-locations. As
+this means may-writes are in the current situation always live, there is
+no point in trying to remove them from the live-out set.
+
+================================================================================
+
+[117] 文件: lib/Transform/DeadCodeElimination.cpp : 第 101 行
+------------------------------------------------------------
+Performs polyhedral dead iteration elimination by:
+o Assuming that the last write to each location is live.
+o Following each RAW dependency from a live iteration backwards and adding
+  that iteration to the live set.
+
+To ensure the set of live iterations does not get too complex we always
+combine a certain number of precise steps with one approximating step that
+simplifies the life set with an affine hull.
+
+================================================================================
+
+[118] 文件: lib/Transform/DeLICM.cpp : 第 86 行
+------------------------------------------------------------
+Compute the next overwrite for a scalar.
+
+@param Schedule      { DomainWrite[] -> Scatter[] }
+                     Schedule of (at least) all writes. Instances not in @p
+                     Writes are ignored.
+@param Writes        { DomainWrite[] }
+                     The element instances that write to the scalar.
+@param InclPrevWrite Whether to extend the timepoints to include
+                     the timepoint where the previous write happens.
+@param InclOverwrite Whether the reaching overwrite includes the timepoint
+                     of the overwrite itself.
+
+@return { Scatter[] -> DomainDef[] }
+
+================================================================================
+
+[119] 文件: lib/Transform/DeLICM.cpp : 第 114 行
+------------------------------------------------------------
+Overload of computeScalarReachingOverwrite, with only one writing statement.
+Consequently, the result consists of only one map space.
+
+@param Schedule      { DomainWrite[] -> Scatter[] }
+@param Writes        { DomainWrite[] }
+@param InclPrevWrite Include the previous write to result.
+@param InclOverwrite Include the overwrite to the result.
+
+@return { Scatter[] -> DomainWrite[] }
+
+================================================================================
+
+[120] 文件: lib/Transform/DeLICM.cpp : 第 136 行
+------------------------------------------------------------
+Try to find a 'natural' extension of a mapped to elements outside its
+domain.
+
+@param Relevant The map with mapping that may not be modified.
+@param Universe The domain to which @p Relevant needs to be extended.
+
+@return A map with that associates the domain elements of @p Relevant to the
+        same elements and in addition the elements of @p Universe to some
+        undefined elements. The function prefers to return simple maps.
+
+================================================================================
+
+[121] 文件: lib/Transform/DeLICM.cpp : 第 153 行
+------------------------------------------------------------
+Represent the knowledge of the contents of any array elements in any zone or
+the knowledge we would add when mapping a scalar to an array element.
+
+Every array element at every zone unit has one of two states:
+
+- Unused: Not occupied by any value so a transformation can change it to
+  other values.
+
+- Occupied: The element contains a value that is still needed.
+
+The union of Unused and Unknown zones forms the universe, the set of all
+elements at every timepoint. The universe can easily be derived from the
+array elements that are accessed someway. Arrays that are never accessed
+also never play a role in any computation and can hence be ignored. With a
+given universe, only one of the sets needs to stored implicitly. Computing
+the complement is also an expensive operation, hence this class has been
+designed that only one of sets is needed while the other is assumed to be
+implicit. It can still be given, but is mostly ignored.
+
+There are two use cases for the Knowledge class:
+
+1) To represent the knowledge of the current state of ScopInfo. The unused
+   state means that an element is currently unused: there is no read of it
+   before the next overwrite. Also called 'Existing'.
+
+2) To represent the requirements for mapping a scalar to array elements. The
+   unused state means that there is no change/requirement. Also called
+   'Proposed'.
+
+In addition to these states at unit zones, Knowledge needs to know when
+values are written. This is because written values may have no lifetime (one
+reason is that the value is never read). Such writes would therefore never
+conflict, but overwrite values that might still be required. Another source
+of problems are multiple writes to the same element at the same timepoint,
+because their order is undefined.
+
+================================================================================
+
+[122] 文件: lib/Transform/DeLICM.cpp : 第 190 行
+------------------------------------------------------------
+{ [Element[] -> Zone[]] }
+Set of array elements and when they are alive.
+Can contain a nullptr; in this case the set is implicitly defined as the
+complement of #Unused.
+
+The set of alive array elements is represented as zone, as the set of live
+values can differ depending on how the elements are interpreted.
+Assuming a value X is written at timestep [0] and read at timestep [1]
+without being used at any later point, then the value is alive in the
+interval ]0,1[. This interval cannot be represented by an integer set, as
+it does not contain any integer point. Zones allow us to represent this
+interval and can be converted to sets of timepoints when needed (e.g., in
+isConflicting when comparing to the write sets).
+@see convertZoneToTimepoints and this file's comment for more details.
+
+================================================================================
+
+[123] 文件: lib/Transform/DeLICM.cpp : 第 206 行
+------------------------------------------------------------
+{ [Element[] -> Zone[]] }
+Set of array elements when they are not alive, i.e. their memory can be
+used for other purposed. Can contain a nullptr; in this case the set is
+implicitly defined as the complement of #Occupied.
+
+================================================================================
+
+[124] 文件: lib/Transform/DeLICM.cpp : 第 212 行
+------------------------------------------------------------
+{ [Element[] -> Zone[]] -> ValInst[] }
+Maps to the known content for each array element at any interval.
+
+Any element/interval can map to multiple known elements. This is due to
+multiple llvm::Value referring to the same content. Examples are
+
+- A value stored and loaded again. The LoadInst represents the same value
+as the StoreInst's value operand.
+
+- A PHINode is equal to any one of the incoming values. In case of
+LCSSA-form, it is always equal to its single incoming value.
+
+Two Knowledges are considered not conflicting if at least one of the known
+values match. Not known values are not stored as an unnamed tuple (as
+#Written does), but maps to nothing.
+
+ Known values are usually just defined for #Occupied elements. Knowing
+ #Unused contents has no advantage as it can be overwritten.
+
+================================================================================
+
+[125] 文件: lib/Transform/DeLICM.cpp : 第 232 行
+------------------------------------------------------------
+{ [Element[] -> Scatter[]] -> ValInst[] }
+The write actions currently in the scop or that would be added when
+mapping a scalar. Maps to the value that is written.
+
+Written values that cannot be identified are represented by an unknown
+ValInst[] (an unnamed tuple of 0 dimension). It conflicts with itself.
+
+================================================================================
+
+[126] 文件: lib/Transform/DeLICM.cpp : 第 319 行
+------------------------------------------------------------
+Determine whether two Knowledges conflict with each other.
+
+In theory @p Existing and @p Proposed are symmetric, but the
+implementation is constrained by the implicit interpretation. That is, @p
+Existing must have #Unused defined (use case 1) and @p Proposed must have
+#Occupied defined (use case 1).
+
+A conflict is defined as non-preserved semantics when they are merged. For
+instance, when for the same array and zone they assume different
+llvm::Values.
+
+@param Existing One of the knowledges with #Unused defined.
+@param Proposed One of the knowledges with #Occupied defined.
+@param OS       Dump the conflict reason to this output stream; use
+                nullptr to not output anything.
+@param Indent   Indention for the conflict reason.
+
+@return True, iff the two knowledges are conflicting.
+
+================================================================================
+
+[127] 文件: lib/Transform/DeLICM.cpp : 第 612 行
+------------------------------------------------------------
+Compute the uses of a MemoryKind::Value and its lifetime (from its
+definition to the last use).
+
+@param SAI The ScopArrayInfo representing the value's storage.
+
+@return { DomainDef[] -> DomainUse[] }, { DomainDef[] -> Zone[] }
+        First element is the set of uses for each definition.
+        The second is the lifetime of each definition.
+
+================================================================================
+
+[128] 文件: lib/Transform/DeLICM.cpp : 第 664 行
+------------------------------------------------------------
+Try to map a MemoryKind::Value to a given array element.
+
+@param SAI       Representation of the scalar's memory to map.
+@param TargetElt { Scatter[] -> Element[] }
+                 Suggestion where to map a scalar to when at a timepoint.
+
+@return true if the scalar was successfully mapped.
+
+================================================================================
+
+[129] 文件: lib/Transform/DeLICM.cpp : 第 756 行
+------------------------------------------------------------
+Map a MemoryKind::Value scalar to an array element.
+
+Callers must have ensured that the mapping is valid and not conflicting.
+
+@param SAI       The ScopArrayInfo representing the scalar's memory to
+                 map.
+@param DefTarget { DomainDef[] -> Element[] }
+                 The array element to map the scalar to.
+@param UseTarget { DomainUse[] -> Element[] }
+                 The array elements the uses are mapped to.
+@param Lifetime  { DomainDef[] -> Zone[] }
+                 The lifetime of each llvm::Value definition for
+                 reporting.
+@param Proposed  Mapping constraints for reporting.
+
+================================================================================
+
+[130] 文件: lib/Transform/DeLICM.cpp : 第 803 行
+------------------------------------------------------------
+Express the incoming values of a PHI for each incoming statement in an
+isl::union_map.
+
+@param SAI The PHI scalar represented by a ScopArrayInfo.
+
+@return { PHIWriteDomain[] -> ValInst[] }
+
+================================================================================
+
+[131] 文件: lib/Transform/DeLICM.cpp : 第 840 行
+------------------------------------------------------------
+Try to map a MemoryKind::PHI scalar to a given array element.
+
+@param SAI       Representation of the scalar's memory to map.
+@param TargetElt { Scatter[] -> Element[] }
+                 Suggestion where to map the scalar to when at a
+                 timepoint.
+
+@return true if the PHI scalar has been mapped.
+
+================================================================================
+
+[132] 文件: lib/Transform/DeLICM.cpp : 第 959 行
+------------------------------------------------------------
+Map a MemoryKind::PHI scalar to an array element.
+
+Callers must have ensured that the mapping is valid and not conflicting
+with the common knowledge.
+
+@param SAI         The ScopArrayInfo representing the scalar's memory to
+                   map.
+@param ReadTarget  { DomainRead[] -> Element[] }
+                   The array element to map the scalar to.
+@param WriteTarget { DomainWrite[] -> Element[] }
+                   New access target for each PHI incoming write.
+@param Lifetime    { DomainRead[] -> Zone[] }
+                   The lifetime of each PHI for reporting.
+@param Proposed    Mapping constraints for reporting.
+
+================================================================================
+
+[133] 文件: lib/Transform/DeLICM.cpp : 第 1003 行
+------------------------------------------------------------
+Search and map scalars to memory overwritten by @p TargetStoreMA.
+
+Start trying to map scalars that are used in the same statement as the
+store. For every successful mapping, try to also map scalars of the
+statements where those are written. Repeat, until no more mapping
+opportunity is found.
+
+There is currently no preference in which order scalars are tried.
+Ideally, we would direct it towards a load instruction of the same array
+element.
+
+================================================================================
+
+[134] 文件: lib/Transform/DeLICM.cpp : 第 1147 行
+------------------------------------------------------------
+Determine when an array element is written to, and which value instance is
+written.
+
+@return { [Element[] -> Scatter[]] -> ValInst[] }
+
+================================================================================
+
+[135] 文件: lib/Transform/DeLICM.cpp : 第 1159 行
+------------------------------------------------------------
+Determine whether an access touches at most one element.
+
+The accessed element could be a scalar or accessing an array with constant
+subscript, such that all instances access only that element.
+
+@param MA The access to test.
+
+@return True, if zero or one elements are accessed; False if at least two
+        different elements are accessed.
+
+================================================================================
+
+[136] 文件: lib/Transform/DeLICM.cpp : 第 1234 行
+------------------------------------------------------------
+Try to map as many scalars to unused array elements as possible.
+
+Multiple scalars might be mappable to intersecting unused array element
+zones, but we can only chose one. This is a greedy algorithm, therefore
+the first processed element claims it.
+
+================================================================================
+
+[137] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 229 行
+------------------------------------------------------------
+Additional parameters of the schedule optimizer.
+
+Target Transform Info and the SCoP dependencies used by the schedule
+optimizer.
+
+================================================================================
+
+[138] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 244 行
+------------------------------------------------------------
+Apply schedule tree transformations.
+
+This function takes an (possibly already optimized) schedule tree and
+applies a set of additional optimizations on the schedule tree. The
+transformations applied include:
+
+  - Pattern-based optimizations
+  - Tiling
+  - Prevectorization
+
+@param Schedule The schedule object the transformations will be applied
+                to.
+@param OAI      Target Transform Info and the SCoP dependencies.
+@returns        The transformed schedule.
+
+================================================================================
+
+[139] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 262 行
+------------------------------------------------------------
+Apply schedule tree transformations.
+
+This function takes a node in an (possibly already optimized) schedule
+tree and applies a set of additional optimizations on this schedule tree
+node and its descendants. The transformations applied include:
+
+  - Pattern-based optimizations
+  - Tiling
+  - Prevectorization
+
+@param Node The schedule object post-transformations will be applied to.
+@param OAI  Target Transform Info and the SCoP dependencies.
+@returns    The transformed schedule.
+
+================================================================================
+
+[140] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 279 行
+------------------------------------------------------------
+Decide if the @p NewSchedule is profitable for @p S.
+
+@param S           The SCoP we optimize.
+@param NewSchedule The new schedule we computed.
+
+@return True, if we believe @p NewSchedule is an improvement for @p S.
+
+================================================================================
+
+[141] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 287 行
+------------------------------------------------------------
+Isolate a set of partial tile prefixes.
+
+This set should ensure that it contains only partial tile prefixes that
+have exactly VectorWidth iterations.
+
+@param Node A schedule node band, which is a parent of a band node,
+            that contains a vector loop.
+@return Modified isl_schedule_node.
+
+================================================================================
+
+[142] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 299 行
+------------------------------------------------------------
+Check if this node is a band node we want to tile.
+
+We look for innermost band nodes where individual dimensions are marked as
+permutable.
+
+@param Node The node to check.
+
+================================================================================
+
+[143] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 307 行
+------------------------------------------------------------
+Check if this node is a band node we want to transform using pattern
+matching.
+
+We look for innermost band nodes where individual dimensions are marked as
+permutable. There is no restriction on the number of individual
+dimensions.
+
+@param Node The node to check.
+
+================================================================================
+
+[144] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 317 行
+------------------------------------------------------------
+Pre-vectorizes one scheduling dimension of a schedule band.
+
+prevectSchedBand splits out the dimension DimToVectorize, tiles it and
+sinks the resulting point loop.
+
+Example (DimToVectorize=0, VectorWidth=4):
+
+| Before transformation:
+|
+| A[i,j] -> [i,j]
+|
+| for (i = 0; i < 128; i++)
+|    for (j = 0; j < 128; j++)
+|      A(i,j);
+
+| After transformation:
+|
+| for (it = 0; it < 32; it+=1)
+|    for (j = 0; j < 128; j++)
+|      for (ip = 0; ip <= 3; ip++)
+|        A(4 * it + ip,j);
+
+The goal of this transformation is to create a trivially vectorizable
+loop.  This means a parallel loop at the innermost level that has a
+constant number of iterations corresponding to the target vector width.
+
+This transformation creates a loop at the innermost level. The loop has
+a constant number of iterations, if the number of loop iterations at
+DimToVectorize can be divided by VectorWidth. The default VectorWidth is
+currently constant and not yet target specific. This function does not
+reason about parallelism.
+
+================================================================================
+
+[145] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 352 行
+------------------------------------------------------------
+Apply additional optimizations on the bands in the schedule tree.
+
+We are looking for an innermost band node and apply the following
+transformations:
+
+ - Tile the band
+     - if the band is tileable
+     - if the band has more than one loop dimension
+
+ - Prevectorize the schedule of the band (or the point loop in case of
+   tiling).
+     - if vectorization is enabled
+
+@param Node The schedule node to (possibly) optimize.
+@param User A pointer to forward some use information
+       (currently unused).
+
+================================================================================
+
+[146] 文件: lib/Transform/ScheduleOptimizer.cpp : 第 664 行
+------------------------------------------------------------
+Collect statistics for the schedule tree.
+
+@param Schedule The schedule tree to analyze. If not a schedule tree it is
+ignored.
+@param Version  The version of the schedule tree that is analyzed.
+                0 for the original schedule tree before any transformation.
+                1 for the schedule tree after isl's rescheduling.
+                2 for the schedule tree after optimizations are applied
+                (tiling, pattern matching)
+
+================================================================================
+
+[147] 文件: lib/Transform/ForwardOpTree.cpp : 第 92 行
+------------------------------------------------------------
+The state of whether an operand tree was/can be forwarded.
+
+The items apply to an instructions and its operand tree with the instruction
+as the root element. If the value in question is not an instruction in the
+SCoP, it can be a leaf of an instruction's operand tree.
+
+================================================================================
+
+[148] 文件: lib/Transform/ForwardOpTree.cpp : 第 104 行
+------------------------------------------------------------
+The root instruction or value can be forwarded as a leaf of a larger
+operand tree.
+It does not make sense to move the value itself, it would just replace it
+by a use of itself. For instance, a constant "5" used in a statement can
+be forwarded, but it would just replace it by the same constant "5".
+However, it makes sense to move as an operand of
+
+  %add = add 5, 5
+
+where "5" is moved as part of a larger operand tree. "5" would be placed
+(disregarding for a moment that literal constants don't have a location
+and can be used anywhere) into the same statement as %add would.
+
+================================================================================
+
+[149] 文件: lib/Transform/ForwardOpTree.cpp : 第 118 行
+------------------------------------------------------------
+The root instruction can be forwarded and doing so avoids a scalar
+dependency.
+
+This can be either because the operand tree can be moved to the target
+statement, or a memory access is redirected to read from a different
+location.
+
+================================================================================
+
+[150] 文件: lib/Transform/ForwardOpTree.cpp : 第 140 行
+------------------------------------------------------------
+Callback to execute the forwarding.
+Returning true allows deleting the polly::MemoryAccess if the value is the
+root of the operand tree (and its elimination the reason why the
+forwarding is done). Return false if the MemoryAccess is reused or there
+might be other users of the read accesses. In the letter case the
+polly::SimplifyPass can remove dead MemoryAccesses.
+
+================================================================================
+
+[151] 文件: lib/Transform/ForwardOpTree.cpp : 第 194 行
+------------------------------------------------------------
+Implementation of operand tree forwarding for a specific SCoP.
+
+For a statement that requires a scalar value (through a value read
+MemoryAccess), see if its operand can be moved into the statement. If so,
+the MemoryAccess is removed and the all the operand tree instructions are
+moved into the statement. All original instructions are left in the source
+statements. The simplification pass can clean these up.
+
+================================================================================
+
+[152] 文件: lib/Transform/ForwardOpTree.cpp : 第 229 行
+------------------------------------------------------------
+Cache of how to forward values.
+The key of this map is the llvm::Value to be forwarded and the
+polly::ScopStmt it is forwarded from. This is because the same llvm::Value
+can evaluate differently depending on where it is evaluate. For instance,
+a synthesizable Scev represents a recurrence with an loop but the loop's
+exit value if evaluated after the loop.
+The cached results are only valid for the current TargetStmt.
+CHECKME: ScalarEvolution::getScevAtScope should take care for getting the
+exit value when instantiated outside of the loop. The primary concern is
+ambiguity when crossing PHI nodes, which currently is not supported.
+
+================================================================================
+
+[153] 文件: lib/Transform/ForwardOpTree.cpp : 第 241 行
+------------------------------------------------------------
+Contains the zones where array elements are known to contain a specific
+value.
+{ [Element[] -> Zone[]] -> ValInst[] }
+@see computeKnown()
+
+================================================================================
+
+[154] 文件: lib/Transform/ForwardOpTree.cpp : 第 252 行
+------------------------------------------------------------
+Get list of array elements that do contain the same ValInst[] at Domain[].
+
+@param ValInst { Domain[] -> ValInst[] }
+               The values for which we search for alternative locations,
+               per statement instance.
+
+@return { Domain[] -> Element[] }
+        For each statement instance, the array elements that contain the
+        same ValInst.
+
+================================================================================
+
+[155] 文件: lib/Transform/ForwardOpTree.cpp : 第 292 行
+------------------------------------------------------------
+Find a single array element for each statement instance, within a single
+array.
+
+@param MustKnown { Domain[] -> Element[] }
+                 Set of candidate array elements.
+@param Domain    { Domain[] }
+                 The statement instance for which we need elements for.
+
+@return { Domain[] -> Element[] }
+        For each statement instance, an array element out of @p MustKnown.
+        All array elements must be in the same array (Polly does not yet
+        support reading from different accesses using the same
+        MemoryAccess). If no mapping for all of @p Domain exists, returns
+        null.
+
+================================================================================
+
+[156] 文件: lib/Transform/ForwardOpTree.cpp : 第 411 行
+------------------------------------------------------------
+Create a new MemoryAccess of type read and MemoryKind::Array.
+
+@param Stmt           The statement in which the access occurs.
+@param LI             The instruction that does the access.
+@param AccessRelation The array element that each statement instance
+                      accesses.
+
+@param The newly created access.
+
+================================================================================
+
+[157] 文件: lib/Transform/ForwardOpTree.cpp : 第 445 行
+------------------------------------------------------------
+Forward a load by reading from an array element that contains the same
+value. Typically the location it was loaded from.
+
+@param TargetStmt  The statement the operand tree will be copied to.
+@param Inst        The (possibly speculatable) instruction to forward.
+@param UseStmt     The statement that uses @p Inst.
+@param UseLoop     The loop @p Inst is used in.
+@param DefStmt     The statement @p Inst is defined in.
+@param DefLoop     The loop which contains @p Inst.
+
+@return A ForwardingAction object describing the feasibility and
+        profitability evaluation and the callback carrying-out the value
+        forwarding.
+
+================================================================================
+
+[158] 文件: lib/Transform/ForwardOpTree.cpp : 第 598 行
+------------------------------------------------------------
+Forward a scalar by redirecting the access to an array element that stores
+the same value.
+
+@param TargetStmt  The statement the operand tree will be copied to.
+@param Inst        The scalar to forward.
+@param UseStmt     The statement that uses @p Inst.
+@param UseLoop     The loop @p Inst is used in.
+@param DefStmt     The statement @p Inst is defined in.
+@param DefLoop     The loop which contains @p Inst.
+
+@return A ForwardingAction object describing the feasibility and
+        profitability evaluation and the callback carrying-out the value
+        forwarding.
+
+================================================================================
+
+[159] 文件: lib/Transform/ForwardOpTree.cpp : 第 657 行
+------------------------------------------------------------
+Forwards a speculatively executable instruction.
+
+@param TargetStmt  The statement the operand tree will be copied to.
+@param UseInst     The (possibly speculatable) instruction to forward.
+@param DefStmt     The statement @p UseInst is defined in.
+@param DefLoop     The loop which contains @p UseInst.
+
+@return A ForwardingAction object describing the feasibility and
+        profitability evaluation and the callback carrying-out the value
+        forwarding.
+
+================================================================================
+
+[160] 文件: lib/Transform/ForwardOpTree.cpp : 第 725 行
+------------------------------------------------------------
+Determines whether an operand tree can be forwarded and returns
+instructions how to do so in the form of a ForwardingAction object.
+
+@param TargetStmt  The statement the operand tree will be copied to.
+@param UseVal      The value (usually an instruction) which is root of an
+                   operand tree.
+@param UseStmt     The statement that uses @p UseVal.
+@param UseLoop     The loop @p UseVal is used in.
+
+@return A ForwardingAction object describing the feasibility and
+        profitability evaluation and the callback carrying-out the value
+        forwarding.
+
+================================================================================
+
+[161] 文件: lib/Transform/ForwardOpTree.cpp : 第 842 行
+------------------------------------------------------------
+Determines whether an operand tree can be forwarded. Previous evaluations
+are cached.
+
+@param TargetStmt  The statement the operand tree will be copied to.
+@param UseVal      The value (usually an instruction) which is root of an
+                   operand tree.
+@param UseStmt     The statement that uses @p UseVal.
+@param UseLoop     The loop @p UseVal is used in.
+
+@return FD_CannotForward        if @p UseVal cannot be forwarded.
+        FD_CanForwardLeaf       if @p UseVal is forwardable, but not
+                                profitable.
+        FD_CanForwardProfitably if @p UseVal is forwardable and useful to
+                                do.
+
+================================================================================
+
+[162] 文件: lib/Transform/ForwardOpTree.cpp : 第 876 行
+------------------------------------------------------------
+Forward an operand tree using cached actions.
+
+@param Stmt   Statement the operand tree is moved into.
+@param UseVal Root of the operand tree within @p Stmt.
+@param RA     The MemoryAccess for @p UseVal that the forwarding intends
+              to remove.
+
+================================================================================
+
+[163] 文件: lib/Transform/ForwardOpTree.cpp : 第 1098 行
+------------------------------------------------------------
+Pass that redirects scalar reads to array elements that are known to contain
+the same value.
+
+This reduces the number of scalar accesses and therefore potentially
+increases the freedom of the scheduler. In the ideal case, all reads of a
+scalar definition are redirected (We currently do not care about removing
+the write in this case).  This is also useful for the main DeLICM pass as
+there are less scalars to be mapped.
+
+================================================================================
+
+[164] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 51 行
+------------------------------------------------------------
+Print the SCoP.
+
+@param OS The stream where to print.
+@param S The SCop that must be printed.
+
+================================================================================
+
+[165] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 87 行
+------------------------------------------------------------
+Filter the dependences to have only one related to current memory access.
+
+@param S The SCop in which the memory access appears in.
+@param MapDependences The dependences to filter.
+@param MA The memory access that need to be expanded.
+
+================================================================================
+
+[166] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 130 行
+------------------------------------------------------------
+Return true if the SAI in parameter is expandable.
+
+@param SAI the SAI that need to be checked.
+@param Writes A set that will contains all the write accesses.
+@param Reads A set that will contains all the read accesses.
+@param S The SCop in which the SAI is in.
+@param Dependences The RAW dependences of the SCop.
+
+================================================================================
+
+[167] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 279 行
+------------------------------------------------------------
+Expand the MemoryAccess according to Dependences and already expanded
+MemoryAccesses.
+
+@param The SCop in which the memory access appears in.
+@param The memory access that need to be expanded.
+@param Dependences The RAW dependences of the SCop.
+@param ExpandedSAI The expanded SAI created during write expansion.
+@param Reverse if true, the Dependences union_map is reversed before
+intersection.
+
+================================================================================
+
+[168] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 321 行
+------------------------------------------------------------
+Expand the MemoryAccess according to its domain.
+
+@param S The SCop in which the memory access appears in.
+@param MA The memory access that need to be expanded.
+
+================================================================================
+
+[169] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 394 行
+------------------------------------------------------------
+Expand PHI memory accesses.
+
+@param The SCop in which the memory access appears in.
+@param The ScopArrayInfo representing the PHI accesses to expand.
+@param Dependences The RAW dependences of the SCop.
+
+================================================================================
+
+[170] 文件: lib/Transform/MaximalStaticExpansion.cpp : 第 414 行
+------------------------------------------------------------
+Expand the accesses of the SCoP
+
+@param S The SCoP that must be expanded
+@param D The dependencies information of SCoP
+
+================================================================================
+
+[171] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 122 行
+------------------------------------------------------------
+Rewrite a schedule tree by reconstructing it bottom-up.
+
+By default, the original schedule tree is reconstructed. To build a
+different tree, redefine visitor methods in a derived class (CRTP).
+
+Note that AST build options are not applied; Setting the isolate[] option
+makes the schedule tree 'anchored' and cannot be modified afterwards. Hence,
+AST build options must be set after the tree has been constructed.
+
+================================================================================
+
+[172] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 218 行
+------------------------------------------------------------
+Rewrite a schedule tree to an equivalent one without extension nodes.
+
+Each visit method takes two additional arguments:
+
+ * The new domain the node, which is the inherited domain plus any domains
+   added by extension nodes.
+
+ * A map of extension domains of all children is returned; it is required by
+   band nodes to schedule the additional domains at the same position as the
+   extension node would.
+
+
+================================================================================
+
+[173] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 356 行
+------------------------------------------------------------
+Collect all AST build options in any schedule tree band.
+
+ScheduleTreeRewriter cannot apply the schedule tree options. This class
+collects these options to apply them later.
+
+================================================================================
+
+[174] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 375 行
+------------------------------------------------------------
+Apply AST build options to the bands in a schedule tree.
+
+This rewrites a schedule tree with the AST build options applied. We assume
+that the band nodes are visited in the same order as they were when the
+build options were collected, typically by CollectASTBuildOptions.
+
+================================================================================
+
+[175] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 520 行
+------------------------------------------------------------
+Return the (one-dimensional) set of numbers that are divisible by @p Factor
+with remainder @p Offset.
+
+ isDivisibleBySet(Ctx, 4, 0) = { [i] : floord(i,4) = 0 }
+ isDivisibleBySet(Ctx, 4, 1) = { [i] : floord(i,4) = 1 }
+
+
+================================================================================
+
+[176] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 543 行
+------------------------------------------------------------
+Make the last dimension of Set to take values from 0 to VectorWidth - 1.
+
+@param Set         A set, which should be modified.
+@param VectorWidth A parameter, which determines the constraint.
+
+================================================================================
+
+[177] 文件: lib/Transform/ScheduleTreeTransform.cpp : 第 833 行
+------------------------------------------------------------
+Fuse all fusable loop top-down in a schedule tree.
+
+The isl::union_map parameters is the set of validity dependencies that have
+not been resolved/carried by a parent schedule node.
+
+================================================================================
 
